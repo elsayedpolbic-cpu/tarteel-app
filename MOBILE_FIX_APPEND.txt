@@ -1,0 +1,71 @@
+/* ===== Tarteel mobile polish ===== */
+@media(max-width:720px){
+
+  /* remove decorative admin-card squares on small screens */
+  .metric:before,
+  .metric:after{
+    display:none!important;
+  }
+
+  .metric{
+    min-height:118px!important;
+    padding:15px 14px!important;
+  }
+
+  .metric small{
+    display:block!important;
+    max-width:100%!important;
+    min-height:36px;
+    line-height:1.65!important;
+    white-space:normal!important;
+    overflow:visible!important;
+  }
+
+  .metric strong{
+    margin-top:8px!important;
+    font-size:21px!important;
+    line-height:1.35!important;
+  }
+
+  .metric:last-child{
+    min-height:118px!important;
+  }
+
+  /* cleaner mobile navigation */
+  .sidebar{
+    padding-bottom:7px!important;
+  }
+
+  nav button{
+    min-height:42px;
+  }
+
+  nav button span:last-child{
+    white-space:nowrap;
+  }
+
+  /* improve top spacing and cards */
+  .dashboard-welcome{
+    margin-bottom:16px!important;
+  }
+
+  .metric-grid{
+    gap:10px!important;
+  }
+
+  .report-kpi-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  .report-kpi{
+    padding:15px 13px!important;
+  }
+
+  .report-kpi strong{
+    font-size:19px!important;
+  }
+
+  .chart-stage{
+    min-height:200px!important;
+  }
+}

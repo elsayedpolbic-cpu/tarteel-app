@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f6d73">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ترتيل">
+  <title>ترتيل | Tarteel</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root {
+      --ink:#103b4a;
+      --muted:#758b94;
+      --bg:#f4f8fb;
+      --blue:#69b9f5;
+      --mint:#56e69f;
+      --line:#dfe9ed;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; width:100%; height:100%; background:var(--bg); font-family:Arial,sans-serif; overflow:hidden; }
+    body { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+    #appFrame {
+      position:fixed;
+      inset:env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+      width:100%;
+      height:calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      border:0;
+      background:#fff;
+    }
+    #splash {
+      position:fixed; inset:0; z-index:10;
+      display:grid; place-items:center;
+      background:
+        radial-gradient(circle at 25% 15%,rgba(105,185,245,.18),transparent 28%),
+        radial-gradient(circle at 80% 75%,rgba(86,230,159,.15),transparent 30%),
+        var(--bg);
+      color:var(--ink);
+      transition:opacity .25s ease,visibility .25s ease;
+    }
+    #splash.hidden { opacity:0; visibility:hidden; }
+    .brand { text-align:center; }
+    .mark { position:relative; width:78px; height:78px; margin:0 auto 18px; }
+    .tile { position:absolute; width:42px; height:42px; border-radius:13px; transform:rotate(45deg); }
+    .blue { top:5px; right:7px; background:linear-gradient(135deg,#7ac6ff,#4faaf3); }
+    .green { bottom:5px; left:7px; background:linear-gradient(135deg,#4deb92,#48d5b9); }
+    h1 { margin:0; font-size:32px; }
+    p { margin:6px 0 0; color:var(--muted); font-size:13px; }
+    #offline {
+      position:fixed; left:14px; right:14px; bottom:calc(14px + env(safe-area-inset-bottom));
+      z-index:20; padding:12px 14px; border-radius:14px;
+      color:#7b4f00; background:#fff4cf; border:1px solid #f2dea0;
+      font-size:13px; text-align:center; display:none;
+    }
+    #offline.show { display:block; }
+  </style>
+</head>
+<body>
+
+  <iframe
+    id="appFrame"
+    src="https://script.google.com/macros/s/AKfycbzPaxl3n-ZlF0pQxYiFEvvLNxLv3gW9sQYgYWSTSYk_d4b200FbEmr_EojxFIizzQi6fA/exec"
+    title="ترتيل"
+    allow="clipboard-read; clipboard-write; fullscreen"
+  ></iframe>
+
+  <div id="splash">
+    <div class="brand">
+      <div class="mark">
+        <span class="tile blue"></span>
+        <span class="tile green"></span>
+      </div>
+      <h1>ترتيل</h1>
+      <p>جارٍ فتح مساحة العمل…</p>
+    </div>
+  </div>
+
+  <div id="offline">لا يوجد اتصال بالإنترنت حاليًا. أعد الاتصال ثم افتح ترتيل من جديد.</div>
+
+  <script>
+    const frame = document.getElementById('appFrame');
+    const splash = document.getElementById('splash');
+    const offline = document.getElementById('offline');
+
+    function updateOnlineState() {
+      offline.classList.toggle('show', !navigator.onLine);
+    }
+
+    frame.addEventListener('load', () => {
+      setTimeout(() => splash.classList.add('hidden'), 350);
+    });
+
+    window.addEventListener('online', updateOnlineState);
+    window.addEventListener('offline', updateOnlineState);
+    updateOnlineState();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+</body>
+</html>
