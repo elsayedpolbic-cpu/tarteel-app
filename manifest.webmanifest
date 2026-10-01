@@ -1,19 +1,24 @@
 {
+  "id": "/tarteel-app/",
   "name": "ترتيل | Tarteel",
   "short_name": "ترتيل",
   "description": "إدارة أعمال ترتيل والمستحقات والتقارير",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/tarteel-app/?app=1",
+  "scope": "/tarteel-app/",
   "display": "standalone",
   "display_override": [
     "standalone",
     "minimal-ui"
   ],
   "background_color": "#f4f8fb",
-  "theme_color": "#0f6d73",
-  "orientation": "any",
+  "theme_color": "#0f777a",
+  "orientation": "portrait-primary",
+  "categories": [
+    "productivity",
+    "business"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",

@@ -2,105 +2,154 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0f6d73">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#0f777a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ترتيل">
   <title>ترتيل | Tarteel</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="favicon.svg">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <style>
     :root {
-      --ink:#103b4a;
-      --muted:#758b94;
-      --bg:#f4f8fb;
-      --blue:#69b9f5;
-      --mint:#56e69f;
-      --line:#dfe9ed;
+      --ink:#103b4a; --muted:#728a93; --bg:#f4f8fb;
+      --blue:#63baf4; --mint:#55e2a0; --line:#dfe9ed;
     }
-    * { box-sizing:border-box; }
-    html,body { margin:0; width:100%; height:100%; background:var(--bg); font-family:Arial,sans-serif; overflow:hidden; }
-    body { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
-    #appFrame {
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Arial,sans-serif}
+    body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+    #frame{
       position:fixed;
       inset:env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
       width:100%;
       height:calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-      border:0;
-      background:#fff;
+      border:0;background:#fff;
     }
-    #splash {
-      position:fixed; inset:0; z-index:10;
-      display:grid; place-items:center;
+    #splash{
+      position:fixed;inset:0;z-index:50;display:grid;place-items:center;
       background:
-        radial-gradient(circle at 25% 15%,rgba(105,185,245,.18),transparent 28%),
-        radial-gradient(circle at 80% 75%,rgba(86,230,159,.15),transparent 30%),
+        radial-gradient(circle at 20% 10%,rgba(99,186,244,.18),transparent 28%),
+        radial-gradient(circle at 82% 78%,rgba(85,226,160,.16),transparent 30%),
         var(--bg);
+      color:var(--ink);transition:opacity .25s ease,visibility .25s ease;
+    }
+    #splash.hide{opacity:0;visibility:hidden}
+    .brand{text-align:center}
+    .mark{position:relative;width:82px;height:82px;margin:0 auto 18px}
+    .tile{position:absolute;width:44px;height:44px;border-radius:14px;transform:rotate(45deg)}
+    .blue{top:5px;right:7px;background:linear-gradient(135deg,#7ac6ff,#4faaf3)}
+    .green{bottom:5px;left:7px;background:linear-gradient(135deg,#4deb92,#48d5b9)}
+    .brand h1{margin:0;font-size:32px}
+    .brand p{margin:7px 0 0;color:var(--muted);font-size:13px}
+    #installCard{
+      position:fixed;z-index:80;left:14px;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));
+      display:none;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,.97);
+      border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(16,59,74,.18);
       color:var(--ink);
-      transition:opacity .25s ease,visibility .25s ease;
     }
-    #splash.hidden { opacity:0; visibility:hidden; }
-    .brand { text-align:center; }
-    .mark { position:relative; width:78px; height:78px; margin:0 auto 18px; }
-    .tile { position:absolute; width:42px; height:42px; border-radius:13px; transform:rotate(45deg); }
-    .blue { top:5px; right:7px; background:linear-gradient(135deg,#7ac6ff,#4faaf3); }
-    .green { bottom:5px; left:7px; background:linear-gradient(135deg,#4deb92,#48d5b9); }
-    h1 { margin:0; font-size:32px; }
-    p { margin:6px 0 0; color:var(--muted); font-size:13px; }
-    #offline {
-      position:fixed; left:14px; right:14px; bottom:calc(14px + env(safe-area-inset-bottom));
-      z-index:20; padding:12px 14px; border-radius:14px;
-      color:#7b4f00; background:#fff4cf; border:1px solid #f2dea0;
-      font-size:13px; text-align:center; display:none;
+    #installCard.show{display:flex}
+    #installCard img{width:46px;height:46px;border-radius:12px}
+    #installCard .copy{flex:1;min-width:0}
+    #installCard b{display:block;font-size:14px}
+    #installCard small{display:block;color:var(--muted);font-size:11px;line-height:1.55}
+    #installBtn{
+      border:0;padding:10px 14px;border-radius:13px;font-weight:700;color:#0c4d58;
+      background:linear-gradient(120deg,var(--blue),#5bd0cd,var(--mint));
     }
-    #offline.show { display:block; }
+    #dismissInstall{border:0;background:transparent;color:#738b94;font-size:22px;line-height:1}
+    #offline{
+      position:fixed;z-index:90;left:14px;right:14px;top:calc(14px + env(safe-area-inset-top));
+      display:none;padding:11px 13px;border-radius:14px;text-align:center;
+      color:#795300;background:#fff4cf;border:1px solid #efd99b;font-size:12px;
+    }
+    #offline.show{display:block}
+    @media (display-mode:standalone){
+      #installCard{display:none!important}
+    }
   </style>
 </head>
 <body>
 
-  <iframe
-    id="appFrame"
-    src="https://script.google.com/macros/s/AKfycbzPaxl3n-ZlF0pQxYiFEvvLNxLv3gW9sQYgYWSTSYk_d4b200FbEmr_EojxFIizzQi6fA/exec"
-    title="ترتيل"
-    allow="clipboard-read; clipboard-write; fullscreen"
-  ></iframe>
+<iframe
+  id="frame"
+  src="https://script.google.com/macros/s/AKfycbzPaxl3n-ZlF0pQxYiFEvvLNxLv3gW9sQYgYWSTSYk_d4b200FbEmr_EojxFIizzQi6fA/exec"
+  title="ترتيل"
+  allow="clipboard-read; clipboard-write; fullscreen"
+></iframe>
 
-  <div id="splash">
-    <div class="brand">
-      <div class="mark">
-        <span class="tile blue"></span>
-        <span class="tile green"></span>
-      </div>
-      <h1>ترتيل</h1>
-      <p>جارٍ فتح مساحة العمل…</p>
+<div id="splash">
+  <div class="brand">
+    <div class="mark">
+      <span class="tile blue"></span>
+      <span class="tile green"></span>
     </div>
+    <h1>ترتيل</h1>
+    <p>جارٍ تجهيز مساحة العمل…</p>
   </div>
+</div>
 
-  <div id="offline">لا يوجد اتصال بالإنترنت حاليًا. أعد الاتصال ثم افتح ترتيل من جديد.</div>
+<div id="installCard" aria-live="polite">
+  <img src="./icons/icon-192.png" alt="">
+  <div class="copy">
+    <b>ثبّت ترتيل كتطبيق</b>
+    <small>هيفتح من أيقونته مباشرة بدون شريط Chrome.</small>
+  </div>
+  <button id="installBtn" type="button">تثبيت</button>
+  <button id="dismissInstall" type="button" aria-label="إخفاء">×</button>
+</div>
 
-  <script>
-    const frame = document.getElementById('appFrame');
-    const splash = document.getElementById('splash');
-    const offline = document.getElementById('offline');
+<div id="offline">لا يوجد اتصال بالإنترنت حاليًا.</div>
 
-    function updateOnlineState() {
-      offline.classList.toggle('show', !navigator.onLine);
+<script>
+  const frame=document.getElementById('frame');
+  const splash=document.getElementById('splash');
+  const installCard=document.getElementById('installCard');
+  const installBtn=document.getElementById('installBtn');
+  const dismissInstall=document.getElementById('dismissInstall');
+  const offline=document.getElementById('offline');
+
+  let deferredPrompt=null;
+  const standalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+
+  function onlineState() {
+    offline.classList.toggle('show',!navigator.onLine);
+  }
+
+  frame.addEventListener('load',()=>setTimeout(()=>splash.classList.add('hide'),250));
+  window.addEventListener('online',onlineState);
+  window.addEventListener('offline',onlineState);
+  onlineState();
+
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    deferredPrompt=e;
+    if(!standalone && localStorage.getItem('tarteel-hide-install')!=='1'){
+      installCard.classList.add('show');
     }
+  });
 
-    frame.addEventListener('load', () => {
-      setTimeout(() => splash.classList.add('hidden'), 350);
-    });
+  installBtn.addEventListener('click',async()=>{
+    if(!deferredPrompt)return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt=null;
+    installCard.classList.remove('show');
+  });
 
-    window.addEventListener('online', updateOnlineState);
-    window.addEventListener('offline', updateOnlineState);
-    updateOnlineState();
+  dismissInstall.addEventListener('click',()=>{
+    installCard.classList.remove('show');
+    localStorage.setItem('tarteel-hide-install','1');
+  });
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-    }
-  </script>
+  window.addEventListener('appinstalled',()=>{
+    installCard.classList.remove('show');
+  });
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+  }
+</script>
 </body>
 </html>
